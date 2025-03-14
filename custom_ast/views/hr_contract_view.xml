@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_form_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.view.form.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='information']/group[@name='salary_info']" position="inside">
+                <group colspan="2">
+                    <group string="Indemnités">
+                        <field name="prime_responsabilite"/>
+                        <field name="indemnite_direction"/>
+                        <field name="indemnite_encadrement"/> 
+                        <field name="indemnite_panier"/>  
+                        <field name="indemnite_caisse"/>
+                        
+                    </group>
+                    <group string="">
+                        <field name="indemnite_transport"/>
+                        <field name="indemnite_lait"/>
+                        <field name="indemnite_representation"/>
+                        <field name="prime_salissure"/>
+                        <field name="prime_tournee"/>
+                    </group>
+                </group>
+                
+            </xpath>
+        </field>
+    </record>
+</odoo>

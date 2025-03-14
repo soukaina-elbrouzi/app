@@ -1,0 +1,45 @@
+<odoo>
+    <record id="custom_paper_format" model="report.paperformat">
+        <field name="name">Custom Paper Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">1</field>
+        <field name="orientation">Portrait</field>
+        <field name="header_line" eval="False"/>  <!-- Remove the header line -->
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+<record id="custom_paper_format_paysage" model="report.paperformat">
+    <field name="name">Custom Paper Format</field>
+    <field name="default" eval="False"/>
+    <field name="format">A4</field>
+    <field name="margin_top">30</field>
+    <field name="margin_bottom">20</field>
+    <field name="margin_left">1</field>
+    <field name="margin_right">1</field>
+    <field name="orientation">Landscape</field>  <!-- Set orientation to Landscape -->
+    <field name="header_line" eval="False"/>  <!-- Remove the header line -->
+    <field name="header_spacing">25</field>
+    <field name="dpi">90</field>
+</record>
+
+    <record id="action_report_bon_de_reception" model="ir.actions.report">
+        <field name="paperformat_id" ref="custom_paper_format_paysage"/>
+    </record>
+
+        <record id="action_report_bon_de_reception_local" model="ir.actions.report">
+        <field name="paperformat_id" ref="custom_paper_format_paysage"/>
+    </record>
+
+     <record id="action_report_bon_de_prelevement" model="ir.actions.report">
+        <field name="paperformat_id" ref="custom_paper_format_paysage"/>
+    </record>
+
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="paperformat_id" ref="custom_paper_format"/>
+    </record>
+</odoo>

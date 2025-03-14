@@ -1,0 +1,95 @@
+<odoo>
+<data>
+ <template id="custom_purchase_quotation_report" inherit_id="purchase.report_purchasequotation_document">
+
+       <t t-call="web.external_layout">
+
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <t t-set="address">
+                   <!-- Add border around the contact information -->
+        <div style="border: 1px solid #FF8C00;border-radius:2%; padding: 10px; margin-bottom: 10px;">
+            <strong>fournisseur :</strong><br/>
+
+            <div t-field="o.partner_id"
+                 t-options="{&quot;widget&quot;: &quot;contact&quot;,
+                             &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;],
+                             &quot;no_marker&quot;: True,
+                             &quot;phone_icons&quot;: True}"/>
+            <p t-if="o.partner_id.vat">ICE: <span t-field="o.partner_id.vat"/></p>
+        </div>
+        </t>
+         <t t-set="information_block">
+            <div style="border: 1.5px solid #FF8C00; padding: 10px;border-radius: 2%; margin-bottom: 10px;">
+                 <t t-if="o.partner_shipping_id != o.partner_invoice_id">
+
+<!--            <strong>Adresse d'expédition :</strong><br/>-->
+            <strong>Client :</strong><br/>
+            <!-- Add border around the shipping address -->
+                <t t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                    <!-- Display the warehouse name if available -->
+                     <span t-field="o.picking_type_id.warehouse_id.company_id.name"/>
+                </t>
+                <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                     t-options="{
+                         &quot;widget&quot;: &quot;contact&quot;,
+                         &quot;fields&quot;: [&quot;address&quot;, &quot;phone&quot;],
+                         &quot;no_marker&quot;: True,
+                         &quot;phone_icons&quot;: True
+                     }"/>
+                      <span>ICE:
+                    <t t-if="o.picking_type_id.warehouse_id.company_id.vat">
+                        <span t-field="o.picking_type_id.warehouse_id.company_id.vat"/>
+                    </t>
+                    <t t-else="N/A"/>
+                    </span>
+                 </t>
+            </div>
+        </t>
+         </t>
+
+
+       <xpath expr="//table" position="replace">
+             <!-- Table with Border -->
+            <table class="o_has_total_table table o_main_table table-borderless" style="border: 1px solid #000; border-collapse: collapse;margin-bottom:3%;">
+                <thead>
+                    <tr>
+                        <th name="th_code_article" class="text-center" style="border: 1px solid #000; padding: 8px;"><strong>Reference</strong></th>
+                        <th name="th_description" class="text-center" style="border: 1px solid #000; padding: 8px;"><strong>Désignation</strong></th>
+                        <th name="th_expected_date" class="text-center" style="border: 1px solid #000; padding: 8px;"><strong>Date prévue </strong></th>
+                        <th name="th_quantity" class="text-center" style="border: 1px solid #000; padding: 8px;"><strong>Qté</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.order_line" t-as="order_line">
+                        <tr t-att-class="'fw-bold o_line_section' if order_line.display_type == 'line_section' else 'fst-italic o_line_note' if order_line.display_type == 'line_note' else ''">
+                            <t t-if="not order_line.display_type">
+                                 <td  style="border: 1px solid #000; padding: 8px;" name="td_code_article" class="text-start">
+                                        <span t-if="order_line.product_id.default_code" t-field="order_line.product_id.default_code"/>
+                                    </td>
+                                <td id="product" style="border: 1px solid #000; padding: 8px;">
+                                    <span t-field="order_line.name"/>
+                                </td>
+                                <td class="text-center" style="border: 1px solid #000; padding: 8px;">
+                                    <span t-field="order_line.date_planned"/>
+                                </td>
+                                <td class="text-center" style="border: 1px solid #000; padding: 8px;">
+                                    <span t-field="order_line.product_qty"/>
+                                    <span t-field="order_line.product_uom" groups="uom.group_uom"/>
+                                    <span t-if="order_line.product_packaging_id">
+                                        (<span t-field="order_line.product_packaging_qty" t-options="{&quot;widget&quot;: &quot;integer&quot;}"/> <span t-field="order_line.product_packaging_id"/>)
+                                    </span>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td colspan="99" id="section">
+                                    <span t-field="order_line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+       </xpath>
+ </template>
+</data>
+</odoo>

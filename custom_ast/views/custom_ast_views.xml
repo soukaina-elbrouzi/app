@@ -1,0 +1,106 @@
+
+<odoo>
+<record id="view_move_form_with_tax_details" model="ir.ui.view">
+    <field name="name">account.move.form.with.tax.details</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form" />
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='tax_totals']" position="after">
+            <field name="tax_details_html" widget="html" nolabel="1" />
+        </xpath>
+    </field>
+</record>
+    <data>
+
+        <record id="view_purchase_order_form_custom" model="ir.ui.view">
+            <field name="name">purchase.order.form.custom</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Modify the 'product_id' field by changing its context and adding 'display_default_code': False -->
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="context">{'partner_id': parent.partner_id, 'quantity': product_qty, 'company_id': parent.company_id, 'use_partner_name': False, 'display_default_code': False}</attribute>
+                    <attribute name="readonly">state in ('purchase', 'to approve', 'done', 'cancel')</attribute>
+                    <attribute name="required">not display_type</attribute>
+                    <attribute name="width">35%</attribute>
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="domain">[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', 'parent_of', parent.company_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Inherit the base purchase order form view -->
+    <record id="view_purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Locate the Fournisseur field and insert Addresses group after it -->
+               <xpath expr="//field[@name='partner_ref']" position="after">
+<!--                    <group string="Addresses">-->
+                        <field name="partner_invoice_id"/>
+                        <field name="partner_shipping_id"/>
+
+<!--                        <field name="port_of_loading" string="Port of Loading"/>-->
+<!--                        <field name="port_of_discharge" string="Port of Discharge"/>-->
+
+<!--                         <field name="transhipment" string="Transhipment"/>-->
+<!--                        <field name="partial_shipment" string="Partial Shipment"/>-->
+
+<!--                   ********************************************************************-->
+<!--                      <xpath expr="//field[@name='currency_id']" position="attributes">-->
+<!--                        <attribute name="readonly">False</attribute>-->
+<!--                    </xpath>-->
+               </xpath>
+
+                <notebook position="inside">
+            <page string="Import">
+                <!-- Show the fields in a group -->
+                <group>
+                      <field name="freight_cost"/>
+                    <field name="port_of_loading" string="Port of Loading"/>
+                    <field name="port_of_discharge" string="Port of Discharge"/>
+                    <field name="transhipment" string="Transhipment"/>
+                    <field name="partial_shipment" string="Partial Shipment"/>
+                </group>
+            </page>
+        </notebook>
+            </field>
+        </record>
+
+
+
+
+<!--<record id="view_order_form_inherit_order_lines" model="ir.ui.view">-->
+<!--    <field name="name">sale.order.form.inherit.order.lines</field>-->
+<!--    <field name="model">sale.order</field>-->
+<!--    <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        &lt;!&ndash; Modify the "Lignes de commande" tab content &ndash;&gt;-->
+<!--        <xpath expr="//div[@class='tab-content']/div[@id='order_lines']" position="inside">-->
+<!--            <div class="o_form_sheet">-->
+<!--                &lt;!&ndash; Add or modify fields for order lines &ndash;&gt;-->
+<!--                <field name="name" />-->
+<!--            </div>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+<!--        <record id="view_order_form_inherit_description" model="ir.ui.view">-->
+<!--    <field name="name">sale.order.form.inherit.description</field>-->
+<!--    <field name="model">sale.order</field>-->
+<!--    <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <xpath expr="//notebook/page[@name='order_lines']" position="inside">-->
+<!--            <group>-->
+<!--                <field name="order_line">-->
+<!--                    <form>-->
+<!--                        <field name="name" />-->
+<!--                    </form>-->
+<!--                </field>-->
+<!--            </group>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+    </data>
+</odoo>

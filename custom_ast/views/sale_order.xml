@@ -1,0 +1,170 @@
+<odoo>
+    <data>
+
+        <!-- Héritage de la vue de la commande de vente -->
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+
+
+
+
+
+
+                <!-- Ajouter le champ 'Changement de prix' -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="is_price_changed" readonly="1"/>
+                <field name="requested_authorization" 
+                       widget="boolean_button" 
+                       string="Autorisation demandée" 
+                       readonly="1"/>
+                    <field name="is_authorized" readonly="1"/>
+               <field name="condition_has_changed" readonly="1"/>
+                <field name="requested_payment_term_authorization"/>
+                <field name="is_payment_term_authorized" readonly="1"/>
+
+                    <field name="is_lot_change_required"/>
+                    <field name="lot_change_detail" />
+
+                </xpath>
+
+                   <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/list[1]/field[@name='price_unit']" position="after">
+                    <field name="price_unit_original" readonly="1"/>
+                </xpath>
+
+                <!-- Ajouter le champ 'Remise Originale' -->
+                <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/list[1]/field[@name='discount']" position="after">
+                    <field name="discount_original" readonly="1"/>
+                </xpath>
+
+                <!-- Ajouter le champ 'Autorisé' -->
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/list[1]/field[@name='discount']" position="after">
+                    <field name="is_authorized" widget="boolean" readonly="1"/>
+                    <field name="has_changes" widget="boolean" readonly="1"/>
+
+                </xpath>
+
+                <!-- Ajouter le bouton 'Autoriser le changement de prix' -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_request_combined_authorization"
+                            type="object"
+                            string="Demander Autorisation"
+                            class="oe_highlight"/>
+
+                <button name="action_set_bon_preparation"
+                        type="object"
+                        string="Valider"
+                        class="btn-primary"/>
+
+                <button name="action_set_draft"
+                        type="object"
+                        string="Remettre  Brouillon"
+                        class="btn-secondary"/>
+                <button name="action_authorize_finance" type="object" string="Autoriser Plafond"  class="btn-secondary" groups="custom_ast.group_plofond_authorization" />   
+
+            
+            <!-- Bouton pour autoriser le changement -->
+            <button name="action_authorize_payment_term"
+                    type="object"
+                    string="Autoriser condition de paiement"
+                    class="btn-success"
+                    groups="custom_ast.group_payment_term_change_authorization"/>
+
+                    <button name="action_authorize_price_change" type="object" string="Autoriser les changements de prix"
+                            class="btn-primary"/>
+
+            <!-- Bouton pour autoriser les changements -->
+            <button name="action_authorize_price_change"
+                    type="object"
+                    string="Autoriser Prix"
+                    groups="custom_ast.group_price_change_authorized"
+                    />
+                </xpath>
+
+            </field>
+        </record>
+
+
+<!--    <record id="view_picking_form_inherit" model="ir.ui.view">-->
+<!--        <field name="name">stock.picking.form.inherit</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="inherit_id" ref="stock.view_picking_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//group[@name='details']" position="inside">-->
+<!--                <group>-->
+<!--                    <field name="total_cost"/>-->
+<!--                    <field name="ratio" readonly="1"/>-->
+<!--                </group>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--        <record id="view_picking_form_inherit" model="ir.ui.view">-->
+<!--        <field name="name">stock.picking.form.inherit</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="inherit_id" ref="stock.view_picking_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="/sheet//group" position="inside">-->
+<!--                <group>-->
+<!--                    <field name="total_cost"/>-->
+<!--                    <field name="ratio" readonly="1"/>-->
+<!--                </group>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+<!--<record id="view_picking_batch_form_inherit" model="ir.ui.view">-->
+<!--    <field name="name">stock.picking.batch.form.inherit</field>-->
+<!--    <field name="model">stock.picking.batch</field>-->
+<!--   -->
+<!--    <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--      -->
+<!--        <xpath expr="//form//sheet//group" position="inside">-->
+<!--            <group>-->
+<!--                <field name="total_cost"/>-->
+<!--                <field name="ratio" readonly="1"/>-->
+<!--            </group>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+
+
+<!--<record id="view_order_form_inherit_description" model="ir.ui.view">-->
+<!--    <field name="name">sale.order.form.inherit.description</field>-->
+<!--    <field name="model">sale.order</field>-->
+<!--    <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        &lt;!&ndash; XPath expression to insert the Description field before product_uom_qty &ndash;&gt;-->
+<!--        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/list[1]/field[@name='product_id']" position="replace">-->
+<!--            <field name="product_id" string="Produit" />-->
+<!--        </xpath>-->
+<!--         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/list[1]/field[@name='product_id']" position="after">-->
+<!--            <field name="name" position="after"/>-->
+<!--&lt;!&ndash;             <attribute>false</attribute>&ndash;&gt;-->
+<!--        </xpath>-->
+
+<!--    </field>-->
+<!--</record>-->
+<!--        <record id="view_order_form_inherit_description" model="ir.ui.view">-->
+<!--            <field name="name">sale.order.form.inherit.description</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--&lt;!&ndash;                 <xpath expr="//field[@name='order_line']/list[1]/field[@name='product_uom']" position="after">&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="name" string="coool" position="after"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
+<!--&lt;!&ndash;                <xpath expr="//field[@name='order_line']/tree" position="inside">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <field name="product_availability"/>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    <field name="delivery_delay"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                </xpath>&ndash;&gt;-->
+<!--            </field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>
+

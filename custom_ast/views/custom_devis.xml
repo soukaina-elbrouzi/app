@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <template id="custom_sale_report_inherit" inherit_id="sale.report_saleorder_document">
+             <xpath expr="//t[4]" position="replace">
+    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id and doc.partner_invoice_id != doc.partner_id                              or doc.partner_shipping_id != doc.partner_invoice_id">
+            <t t-set="information_block">
+<!--                <strong>-->
+<!--                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">-->
+<!--                        Invoicing and Shipping Address-->
+<!--                    </t>-->
+<!--                    <t t-else="">-->
+<!--                        Invoicing Address-->
+<!--                    </t>-->
+<!--                </strong>-->
+<!--                <div t-field="doc.partner_invoice_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>-->
+               <div style="border: 1px solid #FF8C00;border-radius: 2%; padding: 10px;">
+                    <strong>Adresse d'expédition :</strong>
+                    <div t-field="doc.partner_shipping_id" t-options="{
+                        &quot;widget&quot;: &quot;contact&quot;,
+                        &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;],
+                        &quot;no_marker&quot;: True,
+                        &quot;phone_icons&quot;: True
+                    }"/>
+                </div>
+            </t>
+        </t>
+</xpath>
+
+        <!-- Add border around the contact information -->
+
+          <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+        <t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat"/> <!-- So that it appears in the footer of the report instead of the company VAT if it's set -->
+        <t t-set="address">
+        <div style="border: 1px solid #FF8C00;border-radius: 2%; padding: 10px; margin-bottom: 10px;">
+            <div t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+            <p t-if="doc.partner_id.vat">
+                <t t-if="doc.company_id.account_fiscal_country_id.vat_label" t-out="doc.company_id.account_fiscal_country_id.vat_label"/>
+                <t t-else="">N° TVA</t>: <span t-field="doc.partner_id.vat"/>
+            </p>
+        </div>
+        </t>
+          </t>
+
+<!--***********************************************************************-->
+<!-- Add a border to the whole table -->
+<xpath expr="//table" position="attributes">
+    <attribute name="style">border: 1px solid gray; border-collapse: collapse;margin-bottom:30px;</attribute>
+</xpath>
+
+
+<xpath expr="//th" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+
+<xpath expr="//td" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+<xpath expr="//th[@name='th_description']" position="replace">
+    <th name="th_description" class="text-start" style="border: 1px solid gray; padding: 5px; text-align: center;">Description</th>
+</xpath>
+
+<xpath expr="//th[@name='th_quantity']" position="replace">
+    <th name="th_quantity" class="text-end text-nowrap" style="border: 1px solid gray; padding: 5px; text-align: center;">Quantity</th>
+</xpath>
+
+<xpath expr="//th[@name='th_priceunit']" position="replace">
+    <th name="th_priceunit" class="text-end text-nowrap" style="border: 1px solid gray; padding: 5px; text-align: center;">Unit Price</th>
+</xpath>
+
+<xpath expr="//th[@name='th_taxes']" position="replace">
+    <th name="th_taxes" style="border: 1px solid gray; padding: 5px; text-align: center;">Taxes</th>
+</xpath>
+
+<!-- Apply border style to each row cell for subtotal -->
+<xpath expr="//tr[@class='is-subtotal text-end']" position="replace">
+    <tr class="is-subtotal text-end" style="border-top: 2px solid gray;">
+        <td colspan="99" style="border: 1px solid gray; padding: 5px; text-align: center;">
+            <strong>Custom Subtotal</strong>
+            <span t-out="current_subtotal">45.00</span>
+        </td>
+    </tr>
+</xpath>
+
+
+<xpath expr="//td[@name='td_name']" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+<xpath expr="//td[@name='td_quantity']" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+<xpath expr="//td[@name='td_priceunit']" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+<xpath expr="//td[@name='td_taxes']" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+<xpath expr="//td[@name='td_subtotal']" position="attributes">
+    <attribute name="style">border: 1px solid gray; padding: 5px; text-align: center;</attribute>
+</xpath>
+
+    </template>
+
+</odoo>

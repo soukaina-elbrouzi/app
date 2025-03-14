@@ -1,0 +1,26 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Groupe autorisé à changer les prix -->
+        <record id="group_price_change_authorized" model="res.groups">
+            <field name="name">Autoriser Changement de Prix</field>
+        </record>
+	<record id="group_payment_term_authorization" model="res.groups">
+    		<field name="name">Autoriser changement de condition de paiement</field>
+	</record>
+
+        <record id="group_plafond_authorization" model="res.groups">
+                <field name="name">Autoriser dépassement  plafond </field>
+        </record>
+
+        <record id="group_authorization_change_lot" model="res.groups">
+            <field name="name">Autorisation Changement de Lot</field>
+        </record>
+
+        <!-- Groupe pour gestion de l'exigence de changement de lot -->
+        <record id="group_require_authorization_change_lot" model="res.groups">
+            <field name="name">Exigence d'Autorisation pour Changement de Lot</field>
+        </record>
+
+
+    </data>
+</odoo>

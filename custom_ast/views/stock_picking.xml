@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_picking_form_custom" model="ir.ui.view">
+        <field name="name">stock.picking.form.custom</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="print_bon_prelevement" 
+                        string="Imprimer Bon de prélèvement"
+                        type="object" 
+                        class="btn-primary"/>
+        <button name="request_lot_change_authorization" 
+                string="Demander l'autorisation" 
+                type="object" 
+                class="btn-primary" 
+               />
+
+        <!-- Bouton pour autoriser le changement de lot -->
+        <button name="authorize_lot_change" 
+                string="Autoriser le changement de lot" 
+                type="object" 
+                class="btn-success" 
+                />
+
+
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
